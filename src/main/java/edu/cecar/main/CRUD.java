@@ -20,12 +20,12 @@ import java.io.File;
  *
  * @author oderb
  */
-public class Main {
+public class CRUD {
 
     public static void main(String[] args) {
 
-        //ArrayList listaUlrs = new ArrayList<>();
-        //OperacionArchivo.crearArchivoUrl(listaUlrs);
+        ArrayList listaUlrs = new ArrayList<>();
+        OperacionArchivo.crearArchivoUrl(listaUlrs);
         ArrayList listaSitioWeb = new ArrayList<>();
         ArrayList lecturaSitioWeb = new ArrayList<>();
 

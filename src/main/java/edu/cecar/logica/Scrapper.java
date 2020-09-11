@@ -5,8 +5,14 @@
  */
 package edu.cecar.logica;
 
-import edu.cecar.main.Main;
+import edu.cecar.main.CRUD;
+import edu.cecar.persistencia.Articulo;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Jsoup;
@@ -19,27 +25,70 @@ import org.jsoup.select.Elements;
  */
 public class Scrapper {
 
-    public static void ScrappingArticuloSemana(String url) {
+    public static Articulo ScrappingArticuloElHeraldo(String url) {
         Document documento;
+        Articulo articulo = new Articulo();
+
         try {
             documento = Jsoup.connect(url).get();
 
-            Elements fechaArticulo = documento.select("span.date");
-            Elements titulo = documento.select("h1.tittleArticuloOpinion");
-            Elements contenidoArticulo = documento.select("div.theiaStickySidebar");
+            Elements fechaArticulo = documento.select("div.datos.view-desktop").select("time");
+            Elements tituloArticulo = documento.select("h1.article-title.node-title");
+            Elements contenidoArticulo = documento.select("div.content-article.size-m").select("p");
 
-            System.out.println("Titulo: " + titulo.text()+"\n------------------");
-            System.out.println("Fecha: " + fechaArticulo.text()+"\n------------------");
-            System.out.println("Contenido: "+contenidoArticulo.text()+"\n------------------");
+            SimpleDateFormat formatoDeFecha = new SimpleDateFormat("MM-dd-yyyy");
+
+            String fecha = fechaArticulo.attr("datetime");
+
+            Date fechaDelArticulo = formatoDeFecha.parse(fecha);
+
+            fecha = fechaDelArticulo.toString();
+
+            articulo.setContenido(contenidoArticulo.text());
+            articulo.setTitulo(tituloArticulo.text());
+            articulo.setFecha(fecha);
 
         } catch (IOException ex) {
-            
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+            Logger.getLogger(CRUD.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Scrapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      return articulo;
     }
-    
-    public static void ScrappingArticuloTiempo(){
-        
+
+    public static Articulo ScrappingArticuloSucreNoticia(String url) {
+        Articulo articulo = new Articulo();
+        Document documento;
+        try {
+
+            documento = Jsoup.connect(url).get();
+            Elements fechaArticulo = documento.select("time.entry-date.updated.td-module-date");
+            Elements titulo = documento.select("h1.entry-title");
+            Elements contenidoArticulo = documento.select("div.td-post-content").select("p");
+
+            
+
+            SimpleDateFormat formatoDeFecha = new SimpleDateFormat("MM-dd-yyyy");
+            String fecha = fechaArticulo.attr("datetime");
+
+            Date fechaDelArticulo = formatoDeFecha.parse(fecha);
+
+            fecha = fechaDelArticulo.toString();
+
+            articulo.setContenido(contenidoArticulo.text());
+            articulo.setTitulo(titulo.text());
+            articulo.setFecha(fecha);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Scrapper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Scrapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return articulo;
+    }
+
+    public static void main(String[] args) {
+        ScrappingArticuloSucreNoticia("https://sucrenoticias.com/baja-el-indice-de-letalidad-por-covid-19-en-sincelejo/");
     }
 }

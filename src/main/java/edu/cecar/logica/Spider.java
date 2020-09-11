@@ -21,41 +21,24 @@ import java.util.Arrays;
  */
 public class Spider {
 
-    public static ArrayList busquedaUrlSemana(String urlPaginaPrincipal) {
-        ArrayList array  = new ArrayList<>();
+    public static ArrayList busquedaUrlElHeraldo(String urlPaginaPrincipal) {
+        ArrayList array = new ArrayList<>();
         try {
             Document documento = Jsoup.connect(urlPaginaPrincipal).get();
 
-            Elements ArticuloCol1 = documento.select("div.medium-7").select("article.article").select("a.related-news-th");
-            for (int i = 0; i < ArticuloCol1.toArray().length; i++) {
+            Elements ArticuloCol1 = documento.select("h1").select("a");
+
+            for (int i = 1; i < ArticuloCol1.toArray().length; i++) {
+
                 String urlArticulo1 = ArticuloCol1.get(i).attr("href");
+
+                
                 if (urlArticulo1.charAt(0) == '/') {
-                    urlArticulo1 = "https://www.semana.com" + urlArticulo1;
-                    //System.out.println(urlArticulo1);
+                    urlArticulo1 = "https://www.elheraldo.co" + urlArticulo1;
+                    System.out.println(urlArticulo1);
                     array.add(urlArticulo1);
-                } else {
-                    if (urlArticulo1.contains("https://www.semana.com")) {
-                        //System.out.println(urlArticulo1);
-                        array.add(urlArticulo1);
-                    }
                 }
-            }
 
-            Elements ArticuloCol2 = documento.select("div.panel").select("article.article").select("header.article-header").select("a.related-news-th");
-
-            for (int i = 0; i < ArticuloCol2.toArray().length; i++) {
-                String urlArticulo2 = ArticuloCol2.get(i).attr("href");
-
-                if (urlArticulo2.charAt(0) == '/') {
-                    urlArticulo2 = "https://www.semana.com" + urlArticulo2;
-                    array.add(urlArticulo2);
-
-                } else {
-                    if (urlArticulo2.contains("https://www.semana.com")) {
-                        
-                        array.add(urlArticulo2);
-                    }
-                }
             }
 
         } catch (IOException ex) {
@@ -64,7 +47,28 @@ public class Spider {
         return array;
     }
 
-    public static void busquedaUrlElTiempo() {
+    public static ArrayList busquedaUrlDeSucreNoticia(String urlPaginaPrincipal) {
+        ArrayList array = new ArrayList<>();
+        try {
 
+            Document documento = Jsoup.connect(urlPaginaPrincipal).get();
+
+            Elements Articulo1 = documento.select("h3.entry-title.td-module-title").select("a");
+            //System.out.println(Articulo1.attr("href"));
+            for (int i = 0; i < Articulo1.toArray().length; i++) {
+
+                String urlArticulo1 = Articulo1.get(i).attr("href");
+                array.add(urlArticulo1);
+                
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Spider.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return array;
     }
+    public static void main(String[] args) {
+        busquedaUrlElHeraldo("https://www.elheraldo.co/sincelejo");
+    }
+
 }

@@ -25,7 +25,7 @@ public class OperacionArchivo {
         Url url = new Url();
         try {
 
-            flwriter = new FileWriter("C:\\archivos\\ urls.txt");
+            flwriter = new FileWriter("C:\\archivos\\urls.txt");
 
             //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
@@ -124,7 +124,7 @@ public class OperacionArchivo {
             for (Iterator it = lista.iterator(); it.hasNext();) {
                 sw = (SitioWeb) it.next();
 
-                bfwriter.write(sw.getSitioWeb()+"\n");
+                bfwriter.write(sw.getSitioWeb() + "\n");
             }
 
             //cierra el buffer intermedio
@@ -163,7 +163,7 @@ public class OperacionArchivo {
                 SitioWeb sw = new SitioWeb();
 
                 sw.setSitioWeb(delimitar.next());
-                
+
                 listaUrls.add(sw);
             }
 
@@ -184,7 +184,7 @@ public class OperacionArchivo {
             for (Iterator it = lista.iterator(); it.hasNext();) {
 
                 SitioWeb sw = (SitioWeb) it.next();
-                bfwriter.write(sw.getSitioWeb()+ "\n");
+                bfwriter.write(sw.getSitioWeb() + "\n");
 
             }
 
@@ -204,4 +204,99 @@ public class OperacionArchivo {
         }
     }
 
+    public static void crearArchivoArticulo(ArrayList lista) {
+        FileWriter flwriter = null;
+        Articulo articulo = new Articulo();
+        try {
+
+            flwriter = new FileWriter("C:\\archivos\\articulos.txt");
+
+            //crea un buffer o flujo intermedio antes de escribir directamente en el archivo
+            BufferedWriter bfwriter = new BufferedWriter(flwriter);
+            for (Iterator it = lista.iterator(); it.hasNext();) {
+                articulo = (Articulo) it.next();
+
+                bfwriter.write(articulo.getUrl() + ";" + articulo.getTitulo() + ";" + articulo.getContenido() + ";" + articulo.getFecha() + "\n");
+            }
+
+            //cierra el buffer intermedio
+            bfwriter.close();
+            System.out.println("Archivo creado satisfactoriamente..");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (flwriter != null) {
+                try {//cierra el flujo principal
+                    flwriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static ArrayList leerArchivoArticulo() {
+        // crea el flujo para leer desde el archivo
+        File file = new File("C:\\archivos\\articulos.txt");
+        ArrayList listaArticulos = new ArrayList<>();
+        Scanner scanner;
+        try {
+            //se pasa el flujo al objeto scanner
+            scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                // el objeto scanner lee linea a linea desde el archivo
+                String linea = scanner.nextLine();
+                Scanner delimitar = new Scanner(linea);
+
+                delimitar.useDelimiter("\\s*;\\s*");
+
+                Articulo articulo = new Articulo();
+
+                articulo.setUrl(delimitar.next());
+                articulo.setTitulo(delimitar.next());
+                articulo.setContenido(delimitar.next());
+                articulo.setFecha(delimitar.next());
+
+                listaArticulos.add(articulo);
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listaArticulos;
+    }
+
+    public static void AgregarEnArchivoArticulo(ArrayList lista) {
+        FileWriter flwriter = null;
+
+        try {
+            flwriter = new FileWriter("C:\\archivos\\articulos.txt", true);
+            BufferedWriter bfwriter = new BufferedWriter(flwriter);
+
+            for (Iterator it = lista.iterator(); it.hasNext();) {
+
+                Articulo articulo = (Articulo) it.next();
+                bfwriter.write(articulo.getUrl() + ";" + articulo.getTitulo() + ";" + articulo.getContenido() + ";" + articulo.getFecha() + "\n");
+
+            }
+
+            bfwriter.close();
+            System.out.println("Archivo modificado satisfactoriamente..");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (flwriter != null) {
+                try {
+                    flwriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    
 }
