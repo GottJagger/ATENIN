@@ -5,16 +5,15 @@
  */
 package edu.cecar.main;
 
-import edu.cecar.logica.Scrapper;
-import edu.cecar.logica.TratamientoDatos;
+import static edu.cecar.logica.TratamientoDatos.guardarScrapping;
+import static edu.cecar.logica.TratamientoDatos.guardarUrls;
+import edu.cecar.persistencia.Articulo;
 import edu.cecar.persistencia.OperacionArchivo;
 import edu.cecar.persistencia.SitioWeb;
-import edu.cecar.persistencia.Url;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
-import java.io.File;
 
 /**
  *
@@ -25,14 +24,16 @@ public class CRUD {
     public static void main(String[] args) {
 
         ArrayList listaUlrs = new ArrayList<>();
+        ArrayList list= new ArrayList<>();
         OperacionArchivo.crearArchivoUrl(listaUlrs);
+        OperacionArchivo.crearArchivoArticulo(list);
         ArrayList listaSitioWeb = new ArrayList<>();
         ArrayList lecturaSitioWeb = new ArrayList<>();
 
         OperacionArchivo.crearArchivoSitioWeb(listaSitioWeb);
         while (true) {
             lecturaSitioWeb = OperacionArchivo.leerArchivoSitioWeb();
-            switch (JOptionPane.showInputDialog("OPCION:\na.agregar Sitio Web.\nb.modificar sitio Web\nc.borrar\nd.mostrar")) {
+            switch (JOptionPane.showInputDialog("OPCION:\na.agregar Sitio Web.\nb.modificar sitio Web\nc.borrar\nd.mostrar\ne.EJECUTAR SCRAPPING\nf.Tendencia")) {
                 case "a":
 
                     SitioWeb sw = new SitioWeb();
@@ -151,6 +152,48 @@ public class CRUD {
                     }
                     lecturaSitioWeb.clear();
                     break;
+                case "e":
+                    if (lecturaSitioWeb.isEmpty()) {
+                        System.out.println("EL ARCHIVO SITIOWEB ESTA VACIO.");
+                        break;
+                    } else {
+                       
+//
+                        for (Iterator it = lecturaSitioWeb.iterator(); it.hasNext();) {
+                            SitioWeb swlectura = (SitioWeb) it.next();
+                            guardarUrls(swlectura.getSitioWeb());
+                        }
+                        guardarScrapping();
+                    }
+                    break;
+                case "f":
+                    String palabraABuscar = JOptionPane.showInputDialog("digite la palabra que desea buscar");
+                    int valorParrafo = Integer.parseInt(JOptionPane.showInputDialog("digite el valor si se encuentra en parrafo"));
+                    int valorTitulo = Integer.parseInt(JOptionPane.showInputDialog("digite el valor si se encuentra en titulo"));
+                    
+                    int total=0;
+                    ArrayList lecturaDeArticulos = new ArrayList<>();
+                    lecturaDeArticulos=OperacionArchivo.leerArchivoArticulo();
+                    
+                    for (Iterator ir = lecturaDeArticulos.iterator(); ir.hasNext();) {
+                        Articulo articulo = (Articulo)ir.next();
+                        String contenido = articulo.getContenido();
+                        String titulo = articulo.getTitulo();
+                        int contadorCont=palabraABuscar.indexOf(contenido);
+                        int contadortitu=palabraABuscar.indexOf(titulo);
+                        if(contadorCont==-1){
+                            total=total+valorParrafo;
+                        }
+                        if(contadortitu==-1){
+                            total=total+valorTitulo;
+                        }
+                        
+                                
+                    }
+                    System.out.println("La palabra '"+palabraABuscar+"' tiene un total de: "+total);
+                    break;
+
+
             }
         }
     }

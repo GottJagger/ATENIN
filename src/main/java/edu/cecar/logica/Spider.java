@@ -35,7 +35,7 @@ public class Spider {
                 
                 if (urlArticulo1.charAt(0) == '/') {
                     urlArticulo1 = "https://www.elheraldo.co" + urlArticulo1;
-                    System.out.println(urlArticulo1);
+                    //System.out.println(urlArticulo1);
                     array.add(urlArticulo1);
                 }
 
@@ -47,16 +47,17 @@ public class Spider {
         return array;
     }
 
-    public static ArrayList busquedaUrlDeSucreNoticia(String urlPaginaPrincipal) {
+    public static ArrayList busquedaUrlDeMagangueHoy(String urlPaginaPrincipal) {
         ArrayList array = new ArrayList<>();
         try {
 
             Document documento = Jsoup.connect(urlPaginaPrincipal).get();
 
-            Elements Articulo1 = documento.select("h3.entry-title.td-module-title").select("a");
+            Elements Articulo1 = documento.select("div.acme-col-3").select("figure.widget-image").select("a");
             //System.out.println(Articulo1.attr("href"));
             for (int i = 0; i < Articulo1.toArray().length; i++) {
-
+                
+                
                 String urlArticulo1 = Articulo1.get(i).attr("href");
                 array.add(urlArticulo1);
                 
@@ -67,8 +68,17 @@ public class Spider {
         }
         return array;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+            
     public static void main(String[] args) {
-        busquedaUrlElHeraldo("https://www.elheraldo.co/sincelejo");
+        busquedaUrlDeMagangueHoy("https://maganguehoy.co/news/");
     }
 
 }

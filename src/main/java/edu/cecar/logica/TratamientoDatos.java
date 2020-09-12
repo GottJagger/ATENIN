@@ -7,7 +7,6 @@ package edu.cecar.logica;
 
 import edu.cecar.persistencia.Articulo;
 import edu.cecar.persistencia.OperacionArchivo;
-import edu.cecar.persistencia.SitioWeb;
 import edu.cecar.persistencia.Url;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,15 +28,12 @@ public class TratamientoDatos {
         ArrayList listHerl = new ArrayList<>();
 
         lecturaUrl = OperacionArchivo.leerArchivoUrl();
-        if (lecturaUrl.isEmpty()) {
-            //OperacionArchivo.crearArchivoUrl(listaU);
 
+        if (dominio.equals("https://www.elheraldo.co/sincelejo")) {
+            listHerl = Spider.busquedaUrlElHeraldo(dominio);
         } else {
-            if (dominio.equals("https://www.elheraldo.co/sincelejo")) {
-                listHerl = Spider.busquedaUrlElHeraldo(dominio);
-            } else {
-                listSucr = Spider.busquedaUrlDeSucreNoticia(dominio);
-            }
+            System.out.println("ENTRO!");
+            listSucr = Spider.busquedaUrlDeMagangueHoy(dominio);
         }
 
         listaU.addAll(listHerl);
@@ -59,8 +55,6 @@ public class TratamientoDatos {
         Articulo articulo = new Articulo();
         ArrayList listaScrapping = new ArrayList<>();
         ArrayList lecturaUrl = new ArrayList<>();
-        ArrayList listEsp = new ArrayList<>();
-        ArrayList listSem = new ArrayList<>();
 
         OperacionArchivo.crearArchivoArticulo(listaScrapping);
         lecturaUrl = OperacionArchivo.leerArchivoUrl();
@@ -68,27 +62,26 @@ public class TratamientoDatos {
         for (Iterator it = lecturaUrl.iterator(); it.hasNext();) {
             Url url = (Url) it.next();
             System.out.println("el dominio: " + url.getDominio() + "\n url: " + url.getUrl());
-            
-            if (url.getDominio() == "https://sucrenoticias.com") {
+
+            if (url.getDominio().equals("https://maganguehoy.co/news")) {
                 articulo.setUrl(url.getUrl());
-                articulo.setContenido(Scrapper.ScrappingArticuloSucreNoticia(url.getUrl()).getContenido());
-                articulo.setTitulo(Scrapper.ScrappingArticuloSucreNoticia(url.getUrl()).getTitulo());
-                articulo.setFecha(Scrapper.ScrappingArticuloSucreNoticia(url.getUrl()).getFecha());
-                listEsp.add(articulo);
+                articulo.setContenido(Scrapper.ScrappingArticuloMagangueHoy(url.getUrl()).getContenido());
+                articulo.setTitulo(Scrapper.ScrappingArticuloMagangueHoy(url.getUrl()).getTitulo());
+                articulo.setFecha(Scrapper.ScrappingArticuloMagangueHoy(url.getUrl()).getFecha());
+                listaScrapping.add(articulo);
             } else {
 
                 articulo.setUrl(url.getUrl());
                 articulo.setContenido(Scrapper.ScrappingArticuloElHeraldo(url.getUrl().toString()).getContenido());
                 articulo.setTitulo(Scrapper.ScrappingArticuloElHeraldo(url.getUrl().toString()).getTitulo());
                 articulo.setFecha(Scrapper.ScrappingArticuloElHeraldo(url.getUrl().toString()).getFecha());
-                listSem.add(articulo);
+                listaScrapping.add(articulo);
             }
 
+            OperacionArchivo.AgregarEnArchivoArticulo(listaScrapping);
+            listaScrapping.clear();
         }
 
-        //listaScrapping.addAll(listSem);
-        //listaScrapping.addAll(listEsp);
-        //OperacionArchivo.AgregarEnArchivoArticulo(listaScrapping);
     }
 
     public static void main(String[] args) {
@@ -100,9 +93,8 @@ public class TratamientoDatos {
 //            guardarUrls(swlectura.getSitioWeb());
 //        }
 
-        //guardarUrls("https://sucrenoticias.com");
+        //guardarUrls("https://maganguehoy.co/news");
         //guardarUrls("https://www.elheraldo.co/sincelejo");
-        guardarScrapping();
-
+        //guardarScrapping();
     }
 }

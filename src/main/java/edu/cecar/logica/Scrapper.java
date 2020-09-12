@@ -54,20 +54,18 @@ public class Scrapper {
         } catch (ParseException ex) {
             Logger.getLogger(Scrapper.class.getName()).log(Level.SEVERE, null, ex);
         }
-      return articulo;
+        return articulo;
     }
 
-    public static Articulo ScrappingArticuloSucreNoticia(String url) {
+    public static Articulo ScrappingArticuloMagangueHoy(String url) {
         Articulo articulo = new Articulo();
         Document documento;
         try {
 
             documento = Jsoup.connect(url).get();
-            Elements fechaArticulo = documento.select("time.entry-date.updated.td-module-date");
+            Elements fechaArticulo = documento.select("time.entry-date.published");
             Elements titulo = documento.select("h1.entry-title");
-            Elements contenidoArticulo = documento.select("div.td-post-content").select("p");
-
-            
+            Elements contenidoArticulo = documento.select("div.entry-content").select("p");
 
             SimpleDateFormat formatoDeFecha = new SimpleDateFormat("MM-dd-yyyy");
             String fecha = fechaArticulo.attr("datetime");
@@ -89,6 +87,6 @@ public class Scrapper {
     }
 
     public static void main(String[] args) {
-        ScrappingArticuloSucreNoticia("https://sucrenoticias.com/baja-el-indice-de-letalidad-por-covid-19-en-sincelejo/");
+        
     }
 }
