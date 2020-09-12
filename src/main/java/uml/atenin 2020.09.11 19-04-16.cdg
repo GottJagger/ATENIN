@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="atenin">
+  <ClassDiagramComponents>
+    <Class name="Scrapper" package="edu.cecar.logica" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="ScrappingArticuloElHeraldo" returnType="Articulo" visibility="public" isStatic="true">
+          <Argument type="String" name="url"/>
+        </Method>
+        <Method name="ScrappingArticuloMagangueHoy" returnType="Articulo" visibility="public" isStatic="true">
+          <Argument type="String" name="url"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Spider" package="edu.cecar.logica" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="busquedaUrlElHeraldo" returnType="ArrayList" visibility="public" isStatic="true">
+          <Argument type="String" name="urlPaginaPrincipal"/>
+        </Method>
+        <Method name="busquedaUrlDeMagangueHoy" returnType="ArrayList" visibility="public" isStatic="true">
+          <Argument type="String" name="urlPaginaPrincipal"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="TratamientoDatos" package="edu.cecar.logica" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="iteratorDeUrls" type="Iterator" visibility="package"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="guardarUrls" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="dominio"/>
+        </Method>
+        <Method name="guardarScrapping" returnType="void" visibility="public" isStatic="true"/>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CRUD" package="edu.cecar.main" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Articulo" package="edu.cecar.persistencia" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="titulo" type="String" visibility="package"/>
+        <Field name="fecha" type="String" visibility="package"/>
+        <Field name="contenido" type="String" visibility="package"/>
+        <Field name="Url" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="titulo"/>
+          <Argument type="String" name="fecha"/>
+          <Argument type="String" name="contenido"/>
+          <Argument type="String" name="Url"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getTitulo" returnType="String" visibility="public"/>
+        <Method name="setTitulo" returnType="void" visibility="public">
+          <Argument type="String" name="titulo"/>
+        </Method>
+        <Method name="getFecha" returnType="String" visibility="public"/>
+        <Method name="setFecha" returnType="void" visibility="public">
+          <Argument type="String" name="fecha"/>
+        </Method>
+        <Method name="getContenido" returnType="String" visibility="public"/>
+        <Method name="setContenido" returnType="void" visibility="public">
+          <Argument type="String" name="contenido"/>
+        </Method>
+        <Method name="getUrl" returnType="String" visibility="public"/>
+        <Method name="setUrl" returnType="void" visibility="public">
+          <Argument type="String" name="Url"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="OperacionArchivo" package="edu.cecar.persistencia" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="crearArchivoUrl" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+        <Method name="leerArchivoUrl" returnType="ArrayList" visibility="public" isStatic="true"/>
+        <Method name="AgregarEnArchivoUrl" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+        <Method name="crearArchivoSitioWeb" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+        <Method name="leerArchivoSitioWeb" returnType="ArrayList" visibility="public" isStatic="true"/>
+        <Method name="AgregarEnArchivoSitioWeb" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+        <Method name="crearArchivoArticulo" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+        <Method name="leerArchivoArticulo" returnType="ArrayList" visibility="public" isStatic="true"/>
+        <Method name="AgregarEnArchivoArticulo" returnType="void" visibility="public" isStatic="true">
+          <Argument type="ArrayList" name="lista"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="SitioWeb" package="edu.cecar.persistencia" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="SitioWeb" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="SitioWeb"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSitioWeb" returnType="String" visibility="public"/>
+        <Method name="setSitioWeb" returnType="void" visibility="public">
+          <Argument type="String" name="SitioWeb"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Url" package="edu.cecar.persistencia" visibility="public" xPosition="2120.0" yPosition="20.0">
+      <Fields>
+        <Field name="url" type="String" visibility="private"/>
+        <Field name="dominio" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="url"/>
+          <Argument type="String" name="dominio"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getUrl" returnType="String" visibility="public"/>
+        <Method name="setUrl" returnType="void" visibility="public">
+          <Argument type="String" name="url"/>
+        </Method>
+        <Method name="getDominio" returnType="String" visibility="public"/>
+        <Method name="setDominio" returnType="void" visibility="public">
+          <Argument type="String" name="dominio"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="edu.cecar.logica.Scrapper" target="edu.cecar.persistencia.Articulo" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
